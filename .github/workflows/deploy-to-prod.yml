@@ -1,0 +1,39 @@
+name: Automatic deploy on prod
+
+on:
+  pull_request:
+    types:
+      - closed
+  workflow_dispatch:
+
+jobs:
+  deploy-to-prod:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install nodeJS
+        uses: actions/setup-node@v4
+        with:
+            node-version: '22'
+
+      - name: Install dependencies
+        run: |
+          npm install
+          npm run build
+
+      - name: Configuration de la clé SSH
+        run: |
+          mkdir -p ~/.ssh/
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+      - name: Deploy to prod
+        run: |
+          scp -o StrictHostKeyChecking=no -r ./dist/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/var/www/html/
+
+      - name: Restart server
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}
+          sudo systemctl restart apache2
