@@ -19,6 +19,7 @@ jobs:
             -H "Authorization: Bearer ${{ secrets.API_KEY }}" \
             -H "Content-Type: application/json" \
             -X POST https://api.dynapictures.com/designs/7f6476af6a)
+          echo "Response: $response"
           imageUrl=$(echo $response | jq -r '.imageUrl')
           timestamp=$(date +%Y%m%d%H%M%S)
           curl -o images/image_$timestamp.png $imageUrl
