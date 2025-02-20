@@ -21,10 +21,10 @@ jobs:
       - name: Install python
         uses: actions/setup-python@v5
         with:
-            node-version: '3.13'
+            python-version: '3.13'
 
       - name: Check install
         run: |
-          echo "Node version ${node -v}"
-          echo "Python version ${python --version}" 
+          echo "Node version $(node -v)"
+          echo "Python version $(python --version)" 
     
