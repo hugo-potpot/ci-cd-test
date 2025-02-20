@@ -1,0 +1,14 @@
+name: Afficher le dernier commit
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  show-last-commit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Afficher le dernier commit
+        run:  git log -1
