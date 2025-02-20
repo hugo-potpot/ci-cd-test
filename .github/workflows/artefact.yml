@@ -1,0 +1,38 @@
+name: Gestion des artefacts
+
+on:
+    pull_request:
+        types:
+            - opened
+    workflow_dispatch:
+
+jobs:
+    generate-artefact:
+        runs-on: windows-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Generate txt file
+              run: echo "Hello world" | Out-File -FilePath output.txt -Encoding utf8
+              shell: pwsh
+
+            - name: Save file as artifact
+              uses: actions/upload-artifact@v4
+              with:
+                name: artifact-file
+                path: output.txt
+
+    use-artefact:
+        runs-on: windows-latest
+        needs: generate-artefact #wait than generate-artefact job is done
+        steps:
+            - name: Download artifact
+              uses: actions/download-artifact@v4
+              with:
+                name: artifact-file
+                path: ./artifacts
+
+            - name: Read file
+              run: Get-Content -Path ./artifacts/output.txt
+              shell: pwsh
