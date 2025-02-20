@@ -11,4 +11,4 @@ jobs:
 
     steps:
       - name: Afficher le dernier commit
-        run:  git log -1
+        run: git log -1 --pretty=format:'%s'
