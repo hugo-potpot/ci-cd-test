@@ -1,8 +1,11 @@
 name: Utilisation des Github Secrets
 
 on:
-  push:
-  workflow_dispatch:
+  workflow_run:
+    workflows:
+      - Generate image from last commit
+    types:
+        - completed
 
 jobs:
   send-discord-notification:
