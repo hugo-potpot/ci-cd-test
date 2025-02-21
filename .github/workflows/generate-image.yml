@@ -1,5 +1,9 @@
 name: Generate image from last commit
 
+permissions:
+  contents: write
+  pages: write
+
 on:
   push:
     branches:
@@ -23,7 +27,6 @@ jobs:
             -H "Authorization: Bearer ${{ secrets.API_KEY }}" \
             -H "Content-Type: application/json" \
             -X POST https://api.dynapictures.com/designs/7f6476af6a)
-          echo "Response: $response"
           imageUrl=$(echo $response | jq -r '.imageUrl')
           timestamp=$(date +%Y%m%d%H%M%S)
           mkdir -p images
@@ -61,6 +64,3 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./
-          publish_branch: gh-pages
-          allow_empty_commit: true
-          force_orphan: true
