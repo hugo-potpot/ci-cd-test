@@ -13,15 +13,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Get last commit
+        run: |
+          last_commit=$(git log -1 --pretty=format:"%h %s")
+
       - name: Generate image
         run: |
-          response=$(curl -d '{"params":[{"name":"text1","text":"Une fleur rouge","color":"#333","backgroundColor":"#f9f9f9","borderColor":"#ddd","borderWidth":"1px","borderRadius":"5px","opacity":1}]}' \
+          response=$(curl -d "{\"params\":[{\"name\":\"text1\",\"text\":\"$last_commit\",\"color\":\"#333\",\"backgroundColor\":\"#f9f9f9\",\"borderColor\":\"#ddd\",\"borderWidth\":\"1px\",\"borderRadius\":\"5px\",\"opacity\":1}]}" \
             -H "Authorization: Bearer ${{ secrets.API_KEY }}" \
             -H "Content-Type: application/json" \
             -X POST https://api.dynapictures.com/designs/7f6476af6a)
           echo "Response: $response"
           imageUrl=$(echo $response | jq -r '.imageUrl')
           timestamp=$(date +%Y%m%d%H%M%S)
+          mkdir images
           curl -o images/image_$timestamp.png $imageUrl
 
       - name: Save image as artifact
@@ -29,29 +34,3 @@ jobs:
         with:
           name: generated-image
           path: images/image_*.png
-
-#      - name: Get last commit
-#        run: |
-#          git log -1 --pretty=format:"%h %s" > last_commit.txt
-#          echo "Last commit: $(cat last_commit.txt)"
-#
-#      - name: Save file as artifact
-#        uses: actions/upload-artifact@v4
-#        with:
-#          name: last-commit
-#          path: last_commit.txt
-#
-#  generate-image:
-#    runs-on: ubuntu-latest
-#    needs: get-last-commit
-#    steps:
-#      - name: Download artifact
-#        uses: actions/download-artifact@v4
-#        with:
-#          name: last-commit
-#
-#      - name: Read file
-#        run: cat last_commit.txt
-
-
-
