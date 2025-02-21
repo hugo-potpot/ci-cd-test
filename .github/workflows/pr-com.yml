@@ -16,7 +16,7 @@ jobs:
           run: echo "message=$(git log -1 --pretty=%B)" >> $GITHUB_ENV
 
         - name: Add comment
-          uses: actions/github-script@v7
+          uses: actions/github-script@v6
           with:
               github-token: ${{ secrets.GITHUB_TOKEN }}
               script: |
