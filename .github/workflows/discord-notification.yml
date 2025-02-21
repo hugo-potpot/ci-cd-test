@@ -21,10 +21,12 @@ jobs:
 
       - name: Construct image URL
         id: construct_image_url
-        run: echo "IMAGE_URL=https://hugo-potpot.github.io/ci-cd-test//images/${{ env.IMAGE_NAME }}" >> $GITHUB_ENV
+        run: echo "IMAGE_URL=https://hugo-potpot.github.io/ci-cd-test/images/${{ env.IMAGE_NAME }}" >> $GITHUB_ENV
 
       - name: Send notification
         run: |
+          echo "Message: ${{ env.message }}"
+          echo "Image URL: ${{ env.IMAGE_URL }}"
           curl -H "Content-Type: application/json" -X POST ${{ secrets.DISCORD_WEBHOOK }} \
           -d '{
             "username": "Github Actions",
