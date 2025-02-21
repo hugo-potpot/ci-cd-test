@@ -1,5 +1,9 @@
 name: Ajouter un commentaire sur la PR
 
+permissions:
+  pull-requests: write
+  issues: write
+
 on:
   pull_request:
       types: [opened, synchronize]
