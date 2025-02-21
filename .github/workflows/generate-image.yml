@@ -109,14 +109,14 @@ jobs:
                   "url": "${{ env.IMAGE_URL }}"
                 },
                 "fields": [
-                    {
-                        "name": "Repository",
-                        "value": "[${{ github.repository }}](https://github.com/${{ github.repository }})"
-                    },
-                    {
-                        "name": "Branch",
-                        "value": "${{ github.ref }}"
-                    }
+                  {
+                    "name": "Repository",
+                    "value": "[${{ github.repository }}](https://github.com/${{ github.repository }})"
+                  },
+                  {
+                    "name": "Branch",
+                    "value": "${{ github.ref }}"
+                  }
                 ],
                 "footer": {
                   "text": "Github Actions - Automation"
