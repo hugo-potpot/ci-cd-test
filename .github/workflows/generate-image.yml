@@ -91,9 +91,6 @@ jobs:
 
       - name: Send notification
         run: |
-          echo "Message: ${{ env.message }}"
-          echo "Image Name: ${{ env.image_name }}"
-          echo "Image URL: ${{ env.image_url }}"
           curl -H "Content-Type: application/json" -X POST ${{ secrets.DISCORD_WEBHOOK }} \
           -d '{
             "username": "Github Actions",
