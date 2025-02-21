@@ -71,7 +71,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
+        with :
           ref: gh-pages
 
       - name: Get last commit
@@ -91,25 +91,20 @@ jobs:
 
       - name: Send notification
         run: |
-          curl -H "Content-Type: application/json" -X POST ${{ secrets.DISCORD_WEBHOOK }} \
-          -d '{
-            "username": "Github Actions",
-            "embeds": [ {
-              "title": "New commit",
-              "description": "'"${ { env.message } }"'",
-              "color": 8388736,
-              "image": {
-                "url": "'"${ { env.image_url } }"'"
-              },
-              "fields": [ {
-                "name": "Repository",
-                "value": "['${{ github.repository }}'](https://github.com/'${{ github.repository }}')"
-              }, {
-                "name": "Branch",
-                "value": "'"${ { github.ref } }"'"
-              } ],
-              "footer": {
-                "text": "Github Actions - Automation"
-              }
-            } ]
-          }'
+           curl -H "Content-Type: application/json" -X POST ${{ secrets.DISCORD_WEBHOOK }} \
+              -d '{
+                "username": "BOT de Springfield",
+                "embeds": [
+                  {
+                    "title": "Nouveau commit avec Image",
+                    "description": "TEST"
+                    "color": 8388736,
+                    "image": {
+                      "url": "${{ env.IMAGE_URL }}"
+                    },
+                    "footer": {
+                      "text": "Github Actions - Automatisation"
+                    }
+                  }
+                ]
+              }'
