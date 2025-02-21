@@ -84,7 +84,7 @@ jobs:
       - name: Get first generated image
         id: get_image
         run: |
-          IMAGE_NAME=$(ls -1 images | head -n 1)
+          IMAGE_NAME=$(ls ./images)
           echo "image_name=${IMAGE_NAME}" >> "$GITHUB_OUTPUT"
 
       - name: Construct image URL
