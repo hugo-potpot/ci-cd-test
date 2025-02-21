@@ -18,6 +18,15 @@ jobs:
         id: get_commit_message
         run: echo "message=$(git log -1 --pretty=%B)" >> $GITHUB_ENV
 
+      - name: Download images artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: images
+          path: ./images/
+
+      - name: Show images
+        run: ls ./images
+
       - name: Get first generated image
         id: get_image
         run: echo "IMAGE_NAME=$(ls ./images | head -n 1)" >> $GITHUB_ENV
