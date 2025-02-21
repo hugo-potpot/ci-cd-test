@@ -95,6 +95,7 @@ jobs:
       - name: Send notification
         run: |
           echo "Message: ${{ env.message }}"
+          echo "Image Name: ${{ steps.get_image.outputs.image_name }}"
           echo "Image URL: ${{ steps.construct_image_url.outputs.image_url }}"
           curl -H "Content-Type: application/json" -X POST ${{ secrets.DISCORD_WEBHOOK }} \
           -d '{
