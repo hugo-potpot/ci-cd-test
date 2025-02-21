@@ -22,9 +22,19 @@ jobs:
             "username": "Github Actions",
             "embeds": [
               {
-                "title": "Nouveau commit - ${{ github.repository }} - ${{ github.ref }}",
+                "title": "New commit",
                 "description": "${{ env.message }}",
                 "color": 8388736,
+                "fields": [
+                    {
+                        "name": "Repository",
+                        "value": "[${{ github.repository }}](${{ github.repository }})"
+                    },
+                    {
+                        "name": "Branch",
+                        "value": "${{ github.ref }}"
+                    }
+                ],
                 "footer": {
                   "text": "Github Actions - Automation"
                 }
