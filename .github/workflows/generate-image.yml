@@ -83,11 +83,15 @@ jobs:
 
       - name: Get first generated image
         id: get_image
-        run: echo "IMAGE_NAME=$(ls ./images | head -n 1)" >> $GITHUB_ENV
+        run: |
+          IMAGE_NAME=$(ls ./images | head -n 1)
+          echo "IMAGE_NAME=$IMAGE_NAME" >> $GITHUB_ENV
 
       - name: Construct image URL
         id: construct_image_url
-        run: echo "IMAGE_URL=https://hugo-potpot.github.io/ci-cd-test/images/${{ env.IMAGE_NAME }}" >> $GITHUB_ENV
+        run: |
+          IMAGE_URL="https://hugo-potpot.github.io/ci-cd-test/images/$IMAGE_NAME"
+          echo "IMAGE_URL=$IMAGE_URL" >> $GITHUB_ENV
 
       - name: Send notification
         run: |
