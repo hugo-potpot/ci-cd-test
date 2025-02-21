@@ -1,0 +1,33 @@
+name: Utilisation des Github Secrets
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  send-discord-notification:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Get last commit
+        id: get_commit_message
+        run: echo "message=$(git log -1 --pretty=%B)" >> $GITHUB_ENV
+
+      - name: Send notification
+        run: |
+          curl -H "Content-Type: application/json" -X POST ${{ secrets.DISCORD_WEBHOOK }} \
+          -d '{
+            "username": "Github Actions",
+            "embeds": [
+              {
+                "title": "Nouveau commit",
+                "description": "${{ env.message }}",
+                "color": 16711680,
+                "footer": {
+                  "text": "Github Actions - Automation"
+                }
+              }
+            ]
+          }'
