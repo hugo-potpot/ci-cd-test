@@ -45,19 +45,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Download images artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: images
-          path: ./images/
-
-      - name: Install Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.13'
-
-      - name: Generate HTML page
-        run: python generate_html.py
+#      - name: Download images artifact
+#        uses: actions/download-artifact@v4
+#        with:
+#          name: images
+#          path: ./images/
+#
+#      - name: Install Python
+#        uses: actions/setup-python@v5
+#        with:
+#          python-version: '3.13'
+#
+#      - name: Generate HTML page
+#        run: python generate_html.py
 
       - name: Deploy to prod
         uses: peaceiris/actions-gh-pages@v4
