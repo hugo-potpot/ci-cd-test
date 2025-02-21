@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  get-last-commit:
+  generate-image:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -29,8 +29,22 @@ jobs:
           mkdir images
           curl -o images/image_$timestamp.png $imageUrl
 
-      - name: Save image as artifact
-        uses: actions/upload-artifact@v4
+  build-site:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Python
+        uses: actions/setup-python@v5
         with:
-          name: generated-image
-          path: images/image_*.png
+          python-version: '3.13'
+
+      - name: Generate HTML page
+        run: python generate_html.py
+
+      - name: Deploy to prod
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./
