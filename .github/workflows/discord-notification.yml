@@ -15,6 +15,14 @@ jobs:
         id: get_commit_message
         run: echo "message=$(git log -1 --pretty=%B)" >> $GITHUB_ENV
 
+      - name: Get first generated image
+        id: get_image
+        run: echo "IMAGE_NAME=$(ls ./images | head -n 1)" >> $GITHUB_ENV
+
+      - name: Construct image URL
+        id: construct_image_url
+        run: echo "IMAGE_URL=https://hugo-potpot.github.io/ci-cd-test//images/${{ env.IMAGE_NAME }}" >> $GITHUB_ENV
+
       - name: Send notification
         run: |
           curl -H "Content-Type: application/json" -X POST ${{ secrets.DISCORD_WEBHOOK }} \
@@ -25,6 +33,9 @@ jobs:
                 "title": "New commit",
                 "description": "${{ env.message }}",
                 "color": 8388736,
+                "image": {
+                  "url": "${{ env.IMAGE_URL }}"
+                },
                 "fields": [
                     {
                         "name": "Repository",
