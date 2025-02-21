@@ -67,7 +67,7 @@ jobs:
 
   discord-notification:
     runs-on: ubuntu-latest
-    needs: generate-image
+    needs: build-site
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
