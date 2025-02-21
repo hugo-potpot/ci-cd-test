@@ -91,7 +91,7 @@ jobs:
 
       - name: Send notification
         run: |
-          echo "sleep 3"
+          sleep 3
           echo "Message: ${{ env.message }}"
           echo "Image Name: ${{ env.image_name }}"
           echo "Image URL: ${{ env.image_url }}"
