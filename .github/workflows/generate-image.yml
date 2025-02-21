@@ -71,33 +71,29 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with :
+          ref: gh-pages
 
       - name: Get last commit
         id: get_commit_message
         run: echo "message=$(git log -1 --pretty=%B)" >> $GITHUB_ENV
 
-      - name: Download images artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: images
-          path: ./images/
-
       - name: Get first generated image
         id: get_image
         run: |
           IMAGE_NAME=$(ls ./images | head -n 1)
-          echo "image_name=${IMAGE_NAME}" >> "$GITHUB_OUTPUT"
+          echo "image_name=${IMAGE_NAME}" >> $GITHUB_ENV
 
       - name: Construct image URL
         id: construct_image_url
         run: |
-          echo "image_url=https://hugo-potpot.github.io/ci-cd-test/images/${{ steps.get_image.outputs.image_name }}" >> "$GITHUB_OUTPUT"
+          echo "image_url=https://hugo-potpot.github.io/ci-cd-test/images/${{ env.image_name }}" >> $GITHUB_ENV
 
       - name: Send notification
         run: |
           echo "Message: ${{ env.message }}"
-          echo "Image Name: ${{ steps.get_image.outputs.image_name }}"
-          echo "Image URL: ${{ steps.construct_image_url.outputs.image_url }}"
+          echo "Image Name: ${{ env.image_name }}"
+          echo "Image URL: ${{ env.image_url }}"
           curl -H "Content-Type: application/json" -X POST ${{ secrets.DISCORD_WEBHOOK }} \
           -d '{
             "username": "Github Actions",
@@ -107,7 +103,7 @@ jobs:
                 "description": "${{ env.message }}",
                 "color": 8388736,
                 "image": {
-                  "url": "${{ steps.construct_image_url.outputs.image_url }}"
+                  "url": "${{ env.image_url }}"
                 },
                 "fields": [
                   {
