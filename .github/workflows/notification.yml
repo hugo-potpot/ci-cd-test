@@ -29,10 +29,10 @@ jobs:
                     {
                         "name": "Repository",
                         "value": "[${{ github.repository }}](https://github.com/${{ github.repository }})"
-              },
+                    },
                     {
                         "name": "Branch",
-                        "value": "${{ github.branch }}"
+                        "value": "${{ github.ref }}"
                     }
                 ],
                 "footer": {
