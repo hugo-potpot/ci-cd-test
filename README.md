@@ -6,4 +6,5 @@
 [![Last Commit](https://img.shields.io/github/last-commit/hugo-potpot/ci-cd-test)](https://github.com/hugo-potpot/ci-cd-test/commits/main)
 
 ## Workflow Status
-[![Deploy to Prod](https://github.com/hugo-potpot/ci-cd-test/actions/workflows/deploy-to-prod.yml/badge.svg)](https://github.com/hugo-potpot/ci-cd-test/actions/workflows/deploy-to-prod.yml)
+![Deploy to Prod]
+(https://github.com/hugo-potpot/ci-cd-test/actions/workflows/deploy-to-prod.yml/badge.svg)
