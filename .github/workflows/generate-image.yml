@@ -45,22 +45,78 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-#      - name: Download images artifact
-#        uses: actions/download-artifact@v4
-#        with:
-#          name: images
-#          path: ./images/
-#
-#      - name: Install Python
-#        uses: actions/setup-python@v5
-#        with:
-#          python-version: '3.13'
-#
-#      - name: Generate HTML page
-#        run: python generate_html.py
+      - name: Download images artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: images
+          path: ./images/
+
+      - name: Install Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Generate HTML page
+        run: python generate_html.py
 
       - name: Deploy to prod
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./
+
+  discord-notification:
+    runs-on: ubuntu-latest
+    needs: generate-image
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Get last commit
+        id: get_commit_message
+        run: echo "message=$(git log -1 --pretty=%B)" >> $GITHUB_ENV
+
+      - name: Download images artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: images
+
+      - name: Get first generated image
+        id: get_image
+        run: echo "IMAGE_NAME=$(ls ./images | head -n 1)" >> $GITHUB_ENV
+
+      - name: Construct image URL
+        id: construct_image_url
+        run: echo "IMAGE_URL=https://hugo-potpot.github.io/ci-cd-test/images/${{ env.IMAGE_NAME }}" >> $GITHUB_ENV
+
+      - name: Send notification
+        run: |
+          echo "Message: ${{ env.message }}"
+          echo "Image URL: ${{ env.IMAGE_URL }}"
+          curl -H "Content-Type: application/json" -X POST ${{ secrets.DISCORD_WEBHOOK }} \
+          -d '{
+            "username": "Github Actions",
+            "embeds": [
+              {
+                "title": "New commit",
+                "description": "${{ env.message }}",
+                "color": 8388736,
+                "image": {
+                  "url": "${{ env.IMAGE_URL }}"
+                },
+                "fields": [
+                    {
+                        "name": "Repository",
+                        "value": "[${{ github.repository }}](https://github.com/${{ github.repository }})"
+                    },
+                    {
+                        "name": "Branch",
+                        "value": "${{ github.ref }}"
+                    }
+                ],
+                "footer": {
+                  "text": "Github Actions - Automation"
+                }
+              }
+            ]
+          }'
