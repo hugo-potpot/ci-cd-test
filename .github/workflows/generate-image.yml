@@ -100,7 +100,7 @@ jobs:
                     "description": "TEST"
                     "color": 8388736,
                     "image": {
-                      "url": "${{ env.IMAGE_URL }}"
+                      "url": "${{ env.image_url }}"
                     },
                     "footer": {
                       "text": "Github Actions - Automatisation"
